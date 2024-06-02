@@ -9,9 +9,12 @@ defmodule FeedMeWeb.DashboardLive do
       <%= if @user_profile do %>
         <h2><%= @user_profile.first_name %>'s Profile</h2>
         <p>Age: <%= @user_profile.date_of_birth %></p>
+        <.link href={~p"/profile/#{@user_id}"}>
+          <.button>Edit Profile</.button>
+        </.link>
       <% else %>
         <p>No user profile found.</p>
-        <.link href={~p"/profile"}>
+        <.link href={~p"/profile/#{@user_id}"}>
           <.button>Setup Profile</.button>
         </.link>
       <% end %>
@@ -25,13 +28,13 @@ defmodule FeedMeWeb.DashboardLive do
     if connected?(socket) do
       case Profiles.get_profile_by_user_id(current_user.id) do
         nil ->
-          {:ok, socket |> assign(:user_profile, nil)}
+          {:ok, socket |> assign(:user_profile, nil) |> assign(:user_id, current_user.id)}
 
         user_profile ->
-          {:ok, assign(socket, :user_profile, user_profile)}
+          {:ok, socket |> assign(:user_profile, user_profile) |> assign(:user_id, current_user.id)}
       end
     else
-      {:ok, socket |> assign(:user_profile, nil)}
+      {:ok, socket |> assign(:user_profile, nil) |> assign(:user_id, current_user.id)}
     end
   end
 end

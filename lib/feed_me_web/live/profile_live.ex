@@ -16,11 +16,20 @@ defmodule FeedMeWeb.ProfileLive do
     """
   end
 
-  def mount(_, _, socket) do
+  def mount(params, _, socket) do
+    %{"user_id" => user_id} = params
+    profile = Profiles.get_profile_by_user_id(user_id)
+
+    changeset =
+      case profile do
+        nil -> Profiles.change_profile(%Profile{})
+        profile -> Profiles.change_profile(profile)
+      end
+
     socket =
       assign(
         socket,
-        form: to_form(Profiles.change_profile(%Profile{}))
+        form: to_form(changeset)
       )
 
     {:ok, socket}
