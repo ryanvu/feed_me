@@ -56,8 +56,9 @@ defmodule FeedMe.Profiles do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_profile(attrs \\ %{}) do
-    %Profile{}
+  def create_profile(user, attrs \\ %{}) do
+    user
+    |> Ecto.build_assoc(:profiles)
     |> Profile.changeset(attrs)
     |> Repo.insert()
   end
