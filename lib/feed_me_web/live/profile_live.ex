@@ -18,7 +18,12 @@ defmodule FeedMeWeb.ProfileLive do
 
   def mount(params, _, socket) do
     %{"user_id" => user_id} = params
-    profile = Profiles.get_profile_by_user_id(user_id)
+
+    profile =
+      case Profiles.get_profile_by_user_id(user_id) do
+        nil -> %Profile{}
+        profile -> profile
+      end
 
     changeset =
       case profile do
@@ -27,23 +32,34 @@ defmodule FeedMeWeb.ProfileLive do
       end
 
     socket =
-      assign(
-        socket,
-        form: to_form(changeset)
-      )
+      socket
+      |> assign(form: to_form(changeset))
+      |> assign(:profile, profile)
 
     {:ok, socket}
   end
 
   def handle_event("submit", %{"profile" => params}, socket) do
-    case Profiles.create_profile(socket.assigns.current_user, params) do
-      {:ok, _profile} ->
-        changeset = Profiles.change_profile(%Profile{})
+    profile = socket.assigns.profile
+
+    result =
+      case profile do
+        nil ->
+          Profiles.create_profile(socket.assigns.current_user, params)
+
+        _ ->
+          Profiles.update_profile(profile, params)
+      end
+
+    case result do
+      {:ok, profile} ->
+        changeset = Profiles.change_profile(profile || %Profile{})
 
         socket =
           socket
-          |> put_flash(:info, ~c"Profile created")
+          |> put_flash(:info, "Profile #{if profile, do: "updated", else: "created"}")
           |> assign(:form, to_form(changeset))
+          |> assign(:profile, profile)
 
         {:noreply, socket}
 
