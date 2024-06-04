@@ -6,15 +6,16 @@ defmodule FeedMeWeb.ProfileLive do
   def render(assigns) do
     ~H"""
     <h1 class="text-3xl font-bold py-2 border-b-[1px] mb-4">Profile</h1>
-
-    <%= if(@profile.profile_picture_url) do %>
-      <div class="flex w-48 h-48 mb-2 border rounded">
-        <img
-          class="object-cover"
-          src={@profile.profile_picture_url}
-          alt={"Profile Image for #{@profile.first_name}"}
-        />
-      </div>
+    <%= if(@profile) do %>
+      <%= if(@profile.profile_picture_url) do %>
+        <div class="flex w-48 h-48 mb-2 border rounded">
+          <img
+            class="object-cover"
+            src={@profile.profile_picture_url}
+            alt={"Profile Image for #{@profile.first_name}"}
+          />
+        </div>
+      <% end %>
     <% end %>
 
     <.simple_form for={@form} class="flex flex-col gap-2" phx-submit="submit" phx-change="validate">
@@ -32,18 +33,8 @@ defmodule FeedMeWeb.ProfileLive do
   @impl true
   def mount(params, _, socket) do
     %{"user_id" => user_id} = params
-
-    profile =
-      case Profiles.get_profile_by_user_id(user_id) do
-        nil -> %Profile{}
-        profile -> profile
-      end
-
-    changeset =
-      case profile do
-        nil -> Profiles.change_profile(%Profile{})
-        profile -> Profiles.change_profile(profile)
-      end
+    profile = Profiles.get_profile_by_user_id(user_id)
+    changeset = Profiles.change_profile(profile || %Profile{})
 
     socket =
       socket

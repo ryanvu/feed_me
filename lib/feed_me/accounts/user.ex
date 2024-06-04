@@ -8,6 +8,7 @@ defmodule FeedMe.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
     has_one :profiles, FeedMe.Profiles.Profile
+    has_one :meal_preferences, FeedMe.MealPreferences.MealPreference
 
     timestamps(type: :utc_datetime)
   end

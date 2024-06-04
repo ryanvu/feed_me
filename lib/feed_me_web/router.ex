@@ -68,6 +68,7 @@ defmodule FeedMeWeb.Router do
       on_mount: [{FeedMeWeb.UserAuth, :ensure_authenticated}] do
       live "/dashboard", DashboardLive
       live "/profile/:user_id", ProfileLive
+      live "/preferences/:user_id", PreferencesLive
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
