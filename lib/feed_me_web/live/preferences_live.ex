@@ -5,6 +5,18 @@ defmodule FeedMeWeb.PreferencesLive do
 
   @impl true
   def render(assigns) do
+    diet_type_options = [
+      {"Keto", "Keto"},
+      {"Mediterranean", "Mediterranean"},
+      {"Vegan", "Vegan"},
+      {"Vegetarian", "Vegetarian"},
+      {"Low-Carb", "Low-Carb"},
+    ]
+
+    assigns =
+      assigns
+      |> assign(:diet_type_options, diet_type_options)
+
     ~H"""
     <h1 class="text-3xl font-bold py-2 border-b-[1px]">Meal Preferences</h1>
     <.simple_form for={@form} phx-change="validate" phx-submit="submit">
@@ -45,6 +57,7 @@ defmodule FeedMeWeb.PreferencesLive do
         placeholder="e.g. 200g protein"
         required
       />
+      <.input type="select" field={@form[:diet_type]} options={@diet_type_options} label="Diet Type" />
       <.button>Save</.button>
     </.simple_form>
     """
