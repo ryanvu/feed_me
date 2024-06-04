@@ -2,20 +2,30 @@ defmodule FeedMeWeb.ProfileLive do
   use FeedMeWeb, :live_view
   alias FeedMe.{Profiles, Profiles.Profile}
 
+  @impl true
   def render(assigns) do
     ~H"""
     <h1 class="text-3xl font-bold py-2 border-b-[1px] mb-4">Profile</h1>
-    <.form for={@form} class="flex flex-col gap-2" phx-submit="submit">
+
+    <%= if(@profile.profile_picture_url) do %>
+      <div class="flex w-24 h-24 border-[1px] rounded border-blue-400">
+        <img src={@profile.profile_picture_url} alt={"Profile Image for #{@profile.first_name}"} />
+      </div>
+    <% end %>
+    <.simple_form for={@form} class="flex flex-col gap-2" phx-submit="submit" phx-change="validate">
+      <.live_file_input upload={@uploads.image} required />
+
       <.input field={@form[:first_name]} label="First name" type="text" />
       <.input field={@form[:last_name]} label="Last name" type="text" />
       <.input field={@form[:date_of_birth]} label="Date of birth" type="date" />
       <.input field={@form[:height]} label="Height" type="number" />
       <.input field={@form[:weight]} label="Weight" type="number" />
       <.button>Update Profile</.button>
-    </.form>
+    </.simple_form>
     """
   end
 
+  @impl true
   def mount(params, _, socket) do
     %{"user_id" => user_id} = params
 
@@ -31,24 +41,38 @@ defmodule FeedMeWeb.ProfileLive do
         profile -> Profiles.change_profile(profile)
       end
 
+    IO.inspect(profile, label: "Profile")
+
     socket =
       socket
       |> assign(form: to_form(changeset))
       |> assign(:profile, profile)
+      |> allow_upload(:image, accept: ~w(.png .jpg), max_entries: 1)
 
     {:ok, socket}
   end
 
-  def handle_event("submit", %{"profile" => params}, socket) do
+  @impl true
+  def handle_event("validate", _, socket) do
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("submit", %{"profile" => profile_params}, socket) do
     profile = socket.assigns.profile
+
+    profile_params =
+      Map.put(profile_params, "profile_picture_url", List.first(consume_files(socket)))
+
+    IO.inspect(profile_params, label: "Profile Params")
 
     result =
       case profile do
         nil ->
-          Profiles.create_profile(socket.assigns.current_user, params)
+          Profiles.create_profile(socket.assigns.current_user, profile_params)
 
         _ ->
-          Profiles.update_profile(profile, params)
+          Profiles.update_profile(profile, profile_params)
       end
 
     case result do
@@ -66,5 +90,13 @@ defmodule FeedMeWeb.ProfileLive do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
+  end
+
+  defp consume_files(socket) do
+    consume_uploaded_entries(socket, :image, fn %{path: path}, _entry ->
+      dest = Path.join(Application.app_dir(:feed_me, "priv/static/uploads"), Path.basename(path))
+      File.cp!(path, dest)
+      {:ok, ~p"/uploads/#{Path.basename(dest)}"}
+    end)
   end
 end
