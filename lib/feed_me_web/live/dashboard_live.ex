@@ -10,17 +10,28 @@ defmodule FeedMeWeb.DashboardLive do
     <% else %>
       <div class="flex flex-col gap-2">
         <%= if @user_profile do %>
-          <h2><%= @user_profile.first_name %>'s Profile</h2>
-          <p>Age: <%= @age %></p>
-          <.link href={~p"/profile/#{@user_id}"}>
-            <.button>Edit Profile</.button>
-          </.link>
+          <div class="flex gap-4">
+            <div class="flex w-48 h-48 rounded border">
+              <img class="object-cover" src={@user_profile.profile_picture_url} alt="" />
+            </div>
+            <div class="flex flex-col">
+              <h2 class="text-2xl font-bold">
+                <%= @user_profile.first_name %> <%= @user_profile.last_name %>
+              </h2>
+              <p><span class="font-bold">Age:</span> <%= @age %></p>
+              <p><span class="font-bold">Weight:</span> <%= @user_profile.weight %></p>
+              <p><span class="font-bold">Height:</span> <%= @user_profile.height %></p>
+            </div>
+          </div>
         <% else %>
           <p>No user profile found.</p>
           <.link href={~p"/profile/#{@user_id}"}>
             <.button>Setup Profile</.button>
           </.link>
         <% end %>
+        <.link href={~p"/profile/#{@user_id}"}>
+          <.button>Edit Profile</.button>
+        </.link>
       </div>
     <% end %>
     """

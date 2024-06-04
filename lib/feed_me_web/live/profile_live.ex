@@ -8,13 +8,17 @@ defmodule FeedMeWeb.ProfileLive do
     <h1 class="text-3xl font-bold py-2 border-b-[1px] mb-4">Profile</h1>
 
     <%= if(@profile.profile_picture_url) do %>
-      <div class="flex w-24 h-24 border-[1px] rounded border-blue-400">
-        <img src={@profile.profile_picture_url} alt={"Profile Image for #{@profile.first_name}"} />
+      <div class="flex w-48 h-48 mb-2 border rounded">
+        <img
+          class="object-cover"
+          src={@profile.profile_picture_url}
+          alt={"Profile Image for #{@profile.first_name}"}
+        />
       </div>
     <% end %>
-    <.simple_form for={@form} class="flex flex-col gap-2" phx-submit="submit" phx-change="validate">
-      <.live_file_input upload={@uploads.image} required />
 
+    <.simple_form for={@form} class="flex flex-col gap-2" phx-submit="submit" phx-change="validate">
+      <.live_file_input upload={@uploads.image} />
       <.input field={@form[:first_name]} label="First name" type="text" />
       <.input field={@form[:last_name]} label="Last name" type="text" />
       <.input field={@form[:date_of_birth]} label="Date of birth" type="date" />
@@ -41,8 +45,6 @@ defmodule FeedMeWeb.ProfileLive do
         profile -> Profiles.change_profile(profile)
       end
 
-    IO.inspect(profile, label: "Profile")
-
     socket =
       socket
       |> assign(form: to_form(changeset))
@@ -61,10 +63,14 @@ defmodule FeedMeWeb.ProfileLive do
   def handle_event("submit", %{"profile" => profile_params}, socket) do
     profile = socket.assigns.profile
 
-    profile_params =
-      Map.put(profile_params, "profile_picture_url", List.first(consume_files(socket)))
+    uploaded_files = consume_files(socket)
 
-    IO.inspect(profile_params, label: "Profile Params")
+    profile_params =
+      if uploaded_files != [] do
+        Map.put(profile_params, "profile_picture_url", List.first(uploaded_files))
+      else
+        profile_params
+      end
 
     result =
       case profile do
