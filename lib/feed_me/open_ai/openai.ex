@@ -1,44 +1,27 @@
 defmodule FeedMe.OpenAi.Openai do
   @base_url "https://api.openai.com/v1/chat"
   @api_key Application.get_env(:feed_me, FeedMe.OpenAi.Openai)[:api_key]
-
-  # @context """
-  # You are an expert dietician nutritionist. You are helping a client with generating meal plans based off of their incoming preferences.
-  # Return json object format should be:
-  # {
-  #   meal_plan: [meal1, meal2, meal3, etc],
-  #   total_calories,
-  #   total_fats_in_grams,
-  #   total_protein_in_grams,
-  #   total_carbs_in_grams
-  # }
-  # where each meal is a json object with the following format:
-  # {
-  #   name,
-  #   calories,
-  #   fats_in_grams,
-  #   protein_in_grams,
-  #   carbs_in_grams,
-  #   recipe
-  # }
-  # where recipe is a json object of each ingredient, and their respective amounts in grams:
-  # {
-  #   ingredient1: amount_in_grams, total_calories_of_ingredient,
-  #   ingredient2: amount_in_grams, total_calories_of_ingredient
-  # }
-  # """
-
-  # @context """
-  # You are a helpful assistant that generates meal plans.
-  # Please provide a detailed meal plan for the week. The response should be in the following JSON format:
-  # {
-  #   meal_plan: [meal1, meal2, meal3, ...],
-  #   total_calories: total_calories_value,
-  #   total_fats_in_grams: total_fats_value,
-  #   total_protein_in_grams: total_protein_value,
-  #   total_carbs_in_grams: total_carbs_value
-  # } Substitute meal1, meal2, meal3, etc., with the actual meal details and replace the placeholder values with the corresponding calculated totals.
-  # """
+  @json_format """
+  {
+    "meal_plan": <an array of meals>[],
+    "total_calories": <total_calories_of_meal_plan>,
+    "total_fats_in_grams": <total_fats_in_grams>,
+    "total_protein_in_grams": <total_protein_in_grams>,
+    "total_carbs_in_grams": <total_carbs_in_grams>
+  }
+  where each meal recipe is a json object:
+  meal = {
+    "name": <meal_name>,
+    "meal_time": <breakfast | lunch | dinner | snacks>,
+    "ingredients": <an array of ingredients>[],
+  }
+  where each ingredient is a json object of the ingredient and their respective amounts in grams:
+  ingredient = {
+    "name": <ingredient_name>,
+    "amount_in_grams": <amount_in_grams>,
+    "total_calories_of_ingredient": <total_calories_of_ingredient>
+  }
+  """
 
   def request(preferences) do
     url = "#{@base_url}/completions"
@@ -49,8 +32,7 @@ defmodule FeedMe.OpenAi.Openai do
     ]
 
     prompt =
-      "return a meal plan for a client based off of their preferences: #{preferences} in json format: {meal_plan: [breakfast, lunch, dinner, snacks], total_calories, total_fats_in_grams, total_protein_in_grams, total_carbs_in_grams} in each meal, include each ingredient and their respective amounts in grams"
-
+      "Create a meal plan for a client that reaches the requirements of their preferences: #{preferences}"
 
     IO.inspect(prompt, label: "prompt")
 
@@ -58,6 +40,11 @@ defmodule FeedMe.OpenAi.Openai do
       Jason.encode!(%{
         model: "gpt-3.5-turbo",
         messages: [
+          %{
+            role: "system",
+            content:
+              "You are a helpful assistant that generates meal plans. Respond with a JSON structure: #{@json_format}"
+          },
           %{
             role: "assistant",
             content:
