@@ -67,6 +67,7 @@ defmodule FeedMeWeb.Router do
     live_session :require_authenticated_user,
       on_mount: [{FeedMeWeb.UserAuth, :ensure_authenticated}] do
       live "/dashboard", DashboardLive
+      live "/meal_gen", MealGenLive
       live "/profile/:user_id", ProfileLive
       live "/preferences/:user_id", PreferencesLive
       live "/users/settings", UserSettingsLive, :edit

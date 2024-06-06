@@ -57,16 +57,16 @@ defmodule FeedMe.MealPreferences do
   """
   def get_meal_preference!(id), do: Repo.get!(MealPreference, id)
 
-  # @doc """
-  # Creates a new meal preference for a given user.
-  # ## Parameters:
-  # - user (User): The user for whom the meal preference is being created.
-  # - attrs (map): Optional. Additional attributes for the meal preference.
-  # ## Raises:
-  # - Ecto.MultiError: If there are errors during the transaction.
-  # ## Example:
-  #     create_meal_preference(user, %{meal_type: "Breakfast", cuisine: "Italian"})
-  # """
+  @doc """
+  Creates a new meal preference for a given user.
+  ## Parameters:
+  - user (User): The user for whom the meal preference is being created.
+  - attrs (map): Optional. Additional attributes for the meal preference.
+  ## Raises:
+  - Ecto.MultiError: If there are errors during the transaction.
+  ## Example:
+      create_meal_preference(user, %{meal_type: "Breakfast", cuisine: "Italian"})
+  """
 
   def create_meal_preference(user, attrs \\ {}) do
     user

@@ -29,6 +29,10 @@ config :feed_me, FeedMeWeb.Endpoint,
     tailwind: {Tailwind, :install_and_run, [:feed_me, ~w(--watch)]}
   ]
 
+config :feed_me, FeedMe.OpenAi.Openai,
+  api_key: System.get_env("OPENAI_API_KEY")
+
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

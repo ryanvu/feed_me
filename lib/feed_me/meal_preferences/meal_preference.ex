@@ -2,6 +2,23 @@ defmodule FeedMe.MealPreferences.MealPreference do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder,
+           only: [
+             :daily_calorie_limit,
+             :fats_in_grams,
+             :carbs_in_grams,
+             :protein_in_grams,
+             :diet_type,
+             :allergies,
+             :favorite_foods,
+             :disliked_foods,
+             :meal_timing,
+             :water_intake,
+             :micronutrients,
+             :special_conditions,
+             :activity_level
+           ]}
+
   schema "meal_preferences" do
     field :daily_calorie_limit, :integer
     field :fats_in_grams, :integer

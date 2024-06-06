@@ -11,6 +11,9 @@ config :feed_me,
   ecto_repos: [FeedMe.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+config :feed_me, FeedMe.OpenAi.Openai,
+  api_key: System.get_env("OPENAI_API_KEY")
+
 # Configures the endpoint
 config :feed_me, FeedMeWeb.Endpoint,
   url: [host: "localhost"],
