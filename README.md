@@ -1,5 +1,5 @@
 # meal.
-![image](https://github.com/ryanvu/feed_me/assets/13227428/27eb4dee-b533-4744-925f-aa1ec7c9cf0e)
+<img src="https://github.com/ryanvu/feed_me/assets/13227428/27eb4dee-b533-4744-925f-aa1ec7c9cf0e" height="200"/>
 
 > Simple meal planner app built with Elixir and Phoenix
 
