@@ -1,5 +1,5 @@
 # meal.
-![image](./priv/assets/static/images/meal-logo.png)
+![image](./priv/static/images/meal-logo.png)
 
 > Simple meal planner app built with Elixir and Phoenix
 
