@@ -10,7 +10,7 @@ defmodule FeedMeWeb.PreferencesLive do
       {"Mediterranean", "Mediterranean"},
       {"Vegan", "Vegan"},
       {"Vegetarian", "Vegetarian"},
-      {"Low-Carb", "Low-Carb"},
+      {"Low-Carb", "Low-Carb"}
     ]
 
     assigns =
@@ -29,6 +29,7 @@ defmodule FeedMeWeb.PreferencesLive do
         label="Calorie Limit (kcal)"
         placeholder="e.g. 1200 kcal"
         required
+        phx-debounce="blur"
       />
       <.input
         type="number"
@@ -37,6 +38,7 @@ defmodule FeedMeWeb.PreferencesLive do
         field={@form[:fats_in_grams]}
         label="Fats (g)"
         placeholder="e.g. 40g fats"
+        phx-debounce="blur"
         required
       />
       <.input
@@ -46,6 +48,7 @@ defmodule FeedMeWeb.PreferencesLive do
         field={@form[:carbs_in_grams]}
         label="Carbohydrates (g)"
         placeholder="e.g. 160g carbs"
+        phx-debounce="blur"
         required
       />
       <.input
@@ -55,6 +58,7 @@ defmodule FeedMeWeb.PreferencesLive do
         field={@form[:protein_in_grams]}
         label="Protein (g)"
         placeholder="e.g. 200g protein"
+        phx-debounce="blur"
         required
       />
       <.input type="select" field={@form[:diet_type]} options={@diet_type_options} label="Diet Type" />

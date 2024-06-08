@@ -1,6 +1,6 @@
 defmodule FeedMe.OpenAi.Openai do
   @base_url "https://api.openai.com/v1/chat"
-  @api_key Application.get_env(:feed_me, FeedMe.OpenAi.Openai)[:api_key]
+  @api_key Application.compile_env(:feed_me, FeedMe.OpenAi.Openai)[:api_key]
   @json_format """
   {
     "meal_plan": <an array of meals>[],
@@ -14,6 +14,10 @@ defmodule FeedMe.OpenAi.Openai do
     "name": <meal_name>,
     "meal_time": <breakfast | lunch | dinner | snacks>,
     "ingredients": <an array of ingredients>[],
+    "total_calories": <total_calories_of_meal>,
+    "total_fats_in_grams": <total_fats_in_grams_of_meal>,
+    "total_protein_in_grams": <total_protein_in_grams_of_meal>,
+    "total_carbs_in_grams": <total_carbs_in_grams_of_meal>
   }
   where each ingredient is a json object of the ingredient and their respective amounts in grams:
   ingredient = {
@@ -32,9 +36,7 @@ defmodule FeedMe.OpenAi.Openai do
     ]
 
     prompt =
-      "Create a meal plan for a client that reaches the requirements of their preferences: #{preferences}"
-
-    IO.inspect(prompt, label: "prompt")
+      "Create a meal plan for a client that matches the numbers of calories, fats, carbs, and protein in their preferences from this JSON object: #{preferences}"
 
     body =
       Jason.encode!(%{

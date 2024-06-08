@@ -20,11 +20,11 @@ defmodule FeedMeWeb.ProfileLive do
 
     <.simple_form for={@form} class="flex flex-col gap-2" phx-submit="submit" phx-change="validate">
       <.live_file_input upload={@uploads.image} />
-      <.input field={@form[:first_name]} label="First name" type="text" />
-      <.input field={@form[:last_name]} label="Last name" type="text" />
-      <.input field={@form[:date_of_birth]} label="Date of birth" type="date" />
-      <.input field={@form[:height]} label="Height" type="number" />
-      <.input field={@form[:weight]} label="Weight" type="number" />
+      <.input field={@form[:first_name]} label="First name" type="text" phx-debounce="blur" />
+      <.input field={@form[:last_name]} label="Last name" type="text" phx-debounce="blur"/>
+      <.input field={@form[:date_of_birth]} label="Date of birth" type="date" phx-debounce="blur"/>
+      <.input field={@form[:height]} label="Height" type="number" phx-debounce="blur"/>
+      <.input field={@form[:weight]} label="Weight" type="number" phx-debounce="blur"/>
       <.button>Update Profile</.button>
     </.simple_form>
     """
