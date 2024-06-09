@@ -20,5 +20,9 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-## MVP Screenshot
+## MVP Screenshots
+> **Home Page**
+<img src="https://github.com/ryanvu/feed_me/assets/13227428/0304feca-2dbe-433f-b2d6-fe5144c5febe" />
+
+> **Meal Generator**
 <img src="https://github.com/ryanvu/feed_me/assets/13227428/475989a9-5492-45e6-b35a-b12461289a7b" />
