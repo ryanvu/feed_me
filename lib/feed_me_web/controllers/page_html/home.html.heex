@@ -1,10 +1,30 @@
-<.flash_group flash={@flash} />
-<section class="flex flex-col items-center">
-  <h1 class="text-7xl">Eat clean. Eat easy</h1>
-  <div class="flex gap-2">
-    <p class="relative top-8 text-xl">with</p>
-     <img src={~p"/images/logo.png"} width="96" />
-  </div>
-  <button class="text-2xl bg-black text-white rounded-full px-8 py-2">Get started</button>
-</section>
+<main class="flex flex-col min-h-screen">
+  <.flash_group flash={@flash} />
+  <header class="flex p-4 sm:px-6 h-auto justify-between items-center">
+    <a class="relative" href="/">
+      <img src={~p"/images/logo.png"} class="w-16 md:w-24" />
+    </a>
 
+    <nav class="flex gap-2 items-center">
+      <.link href={~p"/users/log_in"} class="text-lg">Login</.link>
+    </nav>
+
+    <.button>
+      <.link href={~p"/users/register"} class="text-lg">Sign Up</.link>
+    </.button>
+  </header>
+  <section class="flex flex-col items-center justify-center flex-grow">
+    <h1 class="text-7xl text-center">Eat clean. Eat easy</h1>
+    <div class="flex gap-2">
+      <p class="relative top-8 text-xl">with</p>
+      <img src={~p"/images/logo.png"} width="96" />
+    </div>
+
+    <.link href={~p"/users/register"}>
+      <button class="text-lg font-semibold bg-black text-white rounded-4xl px-4 py-4">
+        Get started
+      </button>
+    </.link>
+  </section>
+
+</main>

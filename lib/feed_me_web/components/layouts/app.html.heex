@@ -1,56 +1,60 @@
-<header class="px-4 sm:px-6 lg:px-8">
-  <div class="flex items-center justify-between py-3 text-sm">
-    <div class="flex items-center gap-4">
-      <a href="/">
-        <img src={~p"/images/logo.png"} width="64"/>
-      </a>
-    </div>
-    <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
+<div class="flex flex-col min-h-screen md:flex-row">
+  <!-- Header -->
+  <header class="flex p-4 sm:px-6 md:flex-col h-auto md:border-r-gray-200 md:border-r-[1px] md:w-1/6">
+    <a class="relative" href="/">
+      <img src={~p"/images/logo.png"} class="w-16 md:w-24" />
+    </a>
+
+    <div class="hidden md:flex md:flex-col">
       <%= if @current_user do %>
-        <li class="text-[0.8125rem] leading-6 text-zinc-900">
-          <%= @current_user.email %>
-        </li>
-        <li>
-          <.link
-            href={~p"/users/settings"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Settings
-          </.link>
-        </li>
-        <li>
-          <.link
-            href={~p"/users/log_out"}
-            method="delete"
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Log out
-          </.link>
-        </li>
-      <% else %>
-        <li>
-          <.link
-            href={~p"/users/register"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Register
-          </.link>
-        </li>
-        <li>
-          <.link
-            href={~p"/users/log_in"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Log in
-          </.link>
-        </li>
-      <% end %>
-    </ul>
-  </div>
-</header>
-<main class="px-4 py-20 sm:px-6 lg:px-8">
-  <div class="mx-auto max-w-2xl">
-    <.flash_group flash={@flash} />
-    <%= @inner_content %>
-  </div>
-</main>
+        <div class="flex flex-col gap-2">
+        <.link
+        href={~p"/dashboard"}
+        class="text-[0.75rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        >
+        <.icon name="hero-squares-2x2" class="w-8 h-8" />
+        <span>Dashboard</span>
+        </.link>
+
+        <.link
+        href={~p"/users/settings"}
+        class="text-[0.75rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        >
+        <.icon name="hero-cog" class="w-8 h-8" />
+        <span>Settings</span>
+        </.link>
+
+        <.link
+        href={~p"/users/log_out"}
+        method="delete"
+        class="text-[0.75rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700 mt-auto"
+        >
+        <.icon name="hero-arrow-left-end-on-rectangle" class="w-8 h-8" />
+        <span> Log out</span>
+        </.link>
+        </div>
+        <% else %>
+        <.link
+        href={~p"/users/register"}
+        class="text-[0.75rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        >
+        Register
+        </.link>
+        <.link
+        href={~p"/users/log_in"}
+        class="text-[0.75rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        >
+        Log in
+        </.link>
+        <% end %>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="p-4 flex-grow">
+    <div>
+      <.flash_group flash={@flash} />
+      <%= @inner_content %>
+    </div>
+  </main>
+</div>

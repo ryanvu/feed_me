@@ -12,8 +12,6 @@ Setup
 export OPENAI_API_KEY="your_openai_api_key"
 ```
 4. Run `source .env` to load the environment variables
-5. Run `mix setup` to install dependencies and setup the database
-6. Run `mix phx.server` to start the server
 
 To start your Phoenix server:
 
