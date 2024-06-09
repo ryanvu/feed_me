@@ -1,4 +1,4 @@
-# meal.
+# meal. (WIP)
 <img src="https://github.com/ryanvu/feed_me/assets/13227428/27eb4dee-b533-4744-925f-aa1ec7c9cf0e" height="200"/>
 
 > Simple meal planner app built with Elixir and Phoenix
@@ -20,5 +20,5 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-## Still in Progress
+## MVP Screenshot
 <img src="https://github.com/ryanvu/feed_me/assets/13227428/475989a9-5492-45e6-b35a-b12461289a7b" height="480" />
